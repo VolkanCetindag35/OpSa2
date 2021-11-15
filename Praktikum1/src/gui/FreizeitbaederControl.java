@@ -13,14 +13,21 @@ public class FreizeitbaederControl {
 		this.fbModel = new FreizeitbaederModel();
 		this.fbView = new FreizeitbaederView(primaryStage, fbModel, this);
 	}
-
+	
+	//umschreiben in csv datei 
 	void schreibeFreizeitbaederInDatei(String typ) {
 		try {
 			if ("csv".equals(typ)) {
-				this.fbModel.schreibeFreizeitbaederInCsvDatei(fbView);
+				this.fbModel.schreibeFreizeitbaederInCsvDatei();
 				this.fbView.zeigeInformationsfensterAn("Freizeitbäder wurden gespeichert!");
-
-			} else {
+			}
+		else if("txt".equals(typ)){
+   			fbModel.schreibeFreizeitbaederInTxTDatei();
+   			fbView.zeigeInformationsfensterAn(
+   				"Das Freizeitbad wurde gespeichert!");
+   		}
+			
+			else {
 				fbView.zeigeInformationsfensterAn("Noch nicht implementiert!");
 			}
 		} catch (IOException exc) {
