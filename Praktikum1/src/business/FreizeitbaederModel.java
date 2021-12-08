@@ -1,15 +1,13 @@
 package business;  
-import java.io.BufferedWriter; 
-import java.io.FileWriter; 
 import java.io.IOException;
 
 import fabrik.ConcreteCreator;
 import fabrik.ConcreteTxTcreator;
 import fabrik.Creator;
 import fabrik.Product;
-import gui.FreizeitbaederView; 
+import pattern.ConcreteObservable; 
 
- public class FreizeitbaederModel { 
+ public class FreizeitbaederModel extends ConcreteObservable{ 
 	 
 	private Freizeitbad freizeitbad;
 	 /*
@@ -20,6 +18,18 @@ import gui.FreizeitbaederView;
                        } 
     */
 	
+	private static FreizeitbaederModel freizeitbaederModel= null;
+	private FreizeitbaederModel() {
+		
+	}
+	
+	public static FreizeitbaederModel getInstance() {
+		if(freizeitbaederModel == null)
+			freizeitbaederModel= new FreizeitbaederModel();
+		
+		return freizeitbaederModel;
+	}
+	
 	
 	public void schreibeFreizeitbaederInCsvDatei() throws IOException{
 		Creator c = new ConcreteCreator();
@@ -29,7 +39,7 @@ import gui.FreizeitbaederView;
 		
 	}
 	
-	public void schreibeFreizeitbaederInTxTDatei() throws IOException{
+	public void schreibeFreizeitbaederInTxtDatei() throws IOException{
 		Creator c = new ConcreteTxTcreator();
 		Product writer =  c.factoryMethod();
 		writer.fuegeInDateiHinzu(this.freizeitbad);

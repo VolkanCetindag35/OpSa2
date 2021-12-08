@@ -1,16 +1,17 @@
-
-package gui;
+package gui.guiFreizeitbaeder;
 
 import java.io.IOException;
+import pattern.*;
+
 import business.FreizeitbaederModel;
 import javafx.stage.Stage;
 
-public class FreizeitbaederControl {
+public class FreizeitbaederControl implements Observer{
 	private FreizeitbaederView fbView;
 	private FreizeitbaederModel fbModel;
 
 	public FreizeitbaederControl(Stage primaryStage) {
-		this.fbModel = new FreizeitbaederModel();
+		this.fbModel = FreizeitbaederModel.getInstance();
 		this.fbView = new FreizeitbaederView(primaryStage, fbModel, this);
 	}
 	
@@ -22,7 +23,7 @@ public class FreizeitbaederControl {
 				this.fbView.zeigeInformationsfensterAn("Freizeitbäder wurden gespeichert!");
 			}
 		else if("txt".equals(typ)){
-   			fbModel.schreibeFreizeitbaederInTxTDatei();
+   			fbModel.schreibeFreizeitbaederInTxtDatei();
    			fbView.zeigeInformationsfensterAn(
    				"Das Freizeitbad wurde gespeichert!");
    		}
@@ -31,9 +32,17 @@ public class FreizeitbaederControl {
 				fbView.zeigeInformationsfensterAn("Noch nicht implementiert!");
 			}
 		} catch (IOException exc) {
-			fbView.zeigeFehlermeldungsfensterAn("IOException", "IOException beim Speichern!");
+			fbView.zeigeFehlermeldungsfensterAn("IOException beim Speichern!",typ);
 		} catch (Exception exc) {
-			fbView.zeigeFehlermeldungsfensterAn("Exception", "Unbekannter Fehler beim Speichern!");
+			fbView.zeigeFehlermeldungsfensterAn("Unbekannter Fehler beim Speichern!",typ);
 		}
 	}
+	
+	public void update() {
+		fbView.zeigeFreizeitbaederAn();
+	}
+
+
+
+	
 }

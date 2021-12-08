@@ -22,3 +22,9 @@ Oeffnungszeit des Freizeitbads:		12.0 - 23.0
 Beckenlaenge des Freizeitbads:		22
 Wassertemperatur des Freizeitbads:	45
 
+Daten des Freizeitbades
+Name des Freitzeitbads:				volkan
+Oeffnungszeit des Freizeitbads:		12.0 - 13.0
+Beckenlaenge des Freizeitbads:		14
+Wassertemperatur des Freizeitbads:	43
+

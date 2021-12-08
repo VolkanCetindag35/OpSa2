@@ -1,4 +1,5 @@
-package gui;
+package gui.guiFreizeitbaeder;
+
 
 import business.Freizeitbad;
 import javafx.event.ActionEvent;
@@ -159,7 +160,7 @@ public class FreizeitbaederView {
                 }
         }
 
-        private void zeigeFreizeitbaederAn() {
+        void zeigeFreizeitbaederAn() {
                 if (fbModel.getFreizeitbad() != null) {
                         txtAnzeige.setText(fbModel.getFreizeitbad().gibFreizeitbadZurueck(' '));
                 } else {
