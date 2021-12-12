@@ -19,7 +19,6 @@ public class PlausiException extends Exception {
 		return this.plausiTyp;
 	}
 	
-	@Override
 	public String getMessage(){
 		return "Bitte korrigieren Sie den " + plausiTyp + "en " 
 	  	    + "Eingabefehler im Feld " + this.feldname + ".";

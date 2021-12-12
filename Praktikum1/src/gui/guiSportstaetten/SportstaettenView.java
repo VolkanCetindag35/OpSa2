@@ -16,36 +16,28 @@ import ownUtil.MeldungsfensterAnzeiger;
 
 public class SportstaettenView {
 
-	//private SportstaettenControl sportstaettenControl;
+	// private SportstaettenControl sportstaettenControl;
 	private FreizeitbaederModel freizeitbaederModel;
-
-	// ---Anfang Attribute der grafischen Oberflaeche---
 	private Pane pane = new Pane();
 	private Label lblAnzeige = new Label("Anzeige Freizeitbäder");
 	private TextArea txtAnzeige = new TextArea();
 	private Button btnAnzeige = new Button("Anzeige");
-	
-	// -------Ende Attribute der grafischen Oberflaeche-------
 
-	// speichert temporaer ein Objekt vom Typ Freizeitbad
-
-
-	public SportstaettenView(SportstaettenControl sportstaettenControl,FreizeitbaederModel freizeitbaederModel, Stage primaryStage) {
+	public SportstaettenView(SportstaettenControl sportstaettenControl, FreizeitbaederModel freizeitbaederModel,
+			Stage primaryStage) {
 		Scene scene = new Scene(this.pane, 560, 340);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Anzeige von Sportstätten");
 		primaryStage.show();
-		
-		//this.sportstaettenControl= sportstaettenControl;
-		this.freizeitbaederModel=freizeitbaederModel;
-		
+
+		// this.sportstaettenControl= sportstaettenControl; //1
+		this.freizeitbaederModel = freizeitbaederModel;
 		this.initKomponenten();
 		this.initListener();
 	}
 
 	private void initKomponenten() {
-		// Labels
-		
+
 		Font font = new Font("Arial", 20);
 		lblAnzeige.setLayoutX(310);
 		lblAnzeige.setLayoutY(40);
@@ -53,7 +45,6 @@ public class SportstaettenView {
 		lblAnzeige.setStyle("-fx-font-weight: bold;");
 		pane.getChildren().addAll(lblAnzeige);
 
-		// Textbereich
 		txtAnzeige.setEditable(false);
 		txtAnzeige.setLayoutX(310);
 		txtAnzeige.setLayoutY(90);
@@ -61,7 +52,6 @@ public class SportstaettenView {
 		txtAnzeige.setPrefHeight(185);
 		pane.getChildren().add(txtAnzeige);
 
-		// Buttons
 		btnAnzeige.setLayoutX(310);
 		btnAnzeige.setLayoutY(290);
 		pane.getChildren().addAll(btnAnzeige);
@@ -70,7 +60,7 @@ public class SportstaettenView {
 
 	private void initListener() {
 		btnAnzeige.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
+			
 			public void handle(ActionEvent e) {
 				zeigeFreizeitbaederAn();
 			}
@@ -93,5 +83,4 @@ public class SportstaettenView {
 		new MeldungsfensterAnzeiger(AlertType.ERROR, fehlertyp + "Fehler", meldung).zeigeMeldungsfensterAn();
 	}
 
-	
 }

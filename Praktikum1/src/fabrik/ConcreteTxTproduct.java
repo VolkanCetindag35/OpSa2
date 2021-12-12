@@ -14,14 +14,12 @@ public class ConcreteTxTproduct extends Product{
         try {
             bw = new BufferedWriter(new FileWriter("Freizeitbad.txt", true));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    @Override
+    
     public void fuegeInDateiHinzu(Freizeitbad freizeitbad) throws IOException {
-        // TODO Auto-generated method stub
       
         bw.write( "Daten des Freizeitbades\n");
         bw.write("Name des Freitzeitbads:" + "\t\t\t\t" + ((Freizeitbad) freizeitbad).getName() + "\n");
@@ -33,9 +31,8 @@ public class ConcreteTxTproduct extends Product{
         bw.write("\n");
     }
 
-    @Override
+   
     public void schliesseDatei() throws IOException {
-        // TODO Auto-generated method stub
         bw.close();
     }
 
