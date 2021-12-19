@@ -82,3 +82,75 @@ Oeffnungszeit des Freizeitbads:		12.0 - 14.0
 Beckenlaenge des Freizeitbads:		2312
 Wassertemperatur des Freizeitbads:	33
 
+Daten des Freizeitbades
+Name des Freitzeitbads:				volk
+Oeffnungszeit des Freizeitbads:		12.0 - 13.0
+Beckenlaenge des Freizeitbads:		33
+Wassertemperatur des Freizeitbads:	45
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				volk1
+Oeffnungszeit des Freizeitbads:		12.0 - 13.0
+Beckenlaenge des Freizeitbads:		33
+Wassertemperatur des Freizeitbads:	45
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				volk1
+Oeffnungszeit des Freizeitbads:		12.0 - 13.0
+Beckenlaenge des Freizeitbads:		33
+Wassertemperatur des Freizeitbads:	45
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				volk2
+Oeffnungszeit des Freizeitbads:		12.0 - 13.0
+Beckenlaenge des Freizeitbads:		33
+Wassertemperatur des Freizeitbads:	45
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				v
+Oeffnungszeit des Freizeitbads:		12.0 - 13.0
+Beckenlaenge des Freizeitbads:		121
+Wassertemperatur des Freizeitbads:	33
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				v
+Oeffnungszeit des Freizeitbads:		12.0 - 13.0
+Beckenlaenge des Freizeitbads:		121
+Wassertemperatur des Freizeitbads:	33
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				vlll
+Oeffnungszeit des Freizeitbads:		12.0 - 19.0
+Beckenlaenge des Freizeitbads:		12
+Wassertemperatur des Freizeitbads:	23
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				vlll1
+Oeffnungszeit des Freizeitbads:		12.0 - 19.0
+Beckenlaenge des Freizeitbads:		12
+Wassertemperatur des Freizeitbads:	23
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				vlll12
+Oeffnungszeit des Freizeitbads:		12.0 - 19.0
+Beckenlaenge des Freizeitbads:		12
+Wassertemperatur des Freizeitbads:	23
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				q
+Oeffnungszeit des Freizeitbads:		11.0 - 12.0
+Beckenlaenge des Freizeitbads:		23
+Wassertemperatur des Freizeitbads:	12
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				q1
+Oeffnungszeit des Freizeitbads:		11.0 - 12.0
+Beckenlaenge des Freizeitbads:		23
+Wassertemperatur des Freizeitbads:	12
+
+Daten des Freizeitbades
+Name des Freitzeitbads:				q12
+Oeffnungszeit des Freizeitbads:		11.0 - 12.0
+Beckenlaenge des Freizeitbads:		23
+Wassertemperatur des Freizeitbads:	12
+

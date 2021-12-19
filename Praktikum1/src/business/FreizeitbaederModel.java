@@ -15,8 +15,9 @@ import pattern.Observer;
 
 public class FreizeitbaederModel implements Observable {
 
-	private Freizeitbad freizeitbad;
-	private ArrayList<Observer> observers = new ArrayList<>(); // 1
+	//private Freizeitbad freizeitbad;
+	private ArrayList<Freizeitbad>freizeitbad= new ArrayList<>();
+	private ArrayList<Observer> observers = new ArrayList<>();
 	/*
 	 * public void schreibeFreizeitbaederInCsvDatei(FreizeitbaederView fbView)
 	 * throws IOException { BufferedWriter aus = new BufferedWriter(new
@@ -39,7 +40,11 @@ public class FreizeitbaederModel implements Observable {
 	public void schreibeFreizeitbaederInCsvDatei() throws IOException {
 		Creator c = new ConcreteCreator();
 		Product writer = c.factoryMethod();
-		writer.fuegeInDateiHinzu(this.freizeitbad);
+		//writer.fuegeInDateiHinzu(this.freizeitbad);
+		for( Freizeitbad fzb: freizeitbad) {
+			writer.fuegeInDateiHinzu(fzb);
+		}
+		writer.schliesseDatei();
 		writer.schliesseDatei();
 
 	}
@@ -47,17 +52,20 @@ public class FreizeitbaederModel implements Observable {
 	public void schreibeFreizeitbaederInTxtDatei() throws IOException {
 		Creator c = new ConcreteTxTcreator();
 		Product writer = c.factoryMethod();
-		writer.fuegeInDateiHinzu(this.freizeitbad);
+		//writer.fuegeInDateiHinzu(this.freizeitbad);
+		for( Freizeitbad fzb: freizeitbad) {
+			writer.fuegeInDateiHinzu(fzb);
+		}
 		writer.schliesseDatei();
 	}
 
-	public Freizeitbad getFreizeitbad() {
+	public ArrayList<Freizeitbad> getFreizeitbad() {
 		return this.freizeitbad;
 	}
 
-	public void setFreizeitbad(Freizeitbad freizeitbad) {
-		this.freizeitbad = freizeitbad;
-		notifyObservers();
+	public void addFreizeitbad(Freizeitbad freizeitbad) {
+		this.freizeitbad.add(freizeitbad);
+		this.notifyObservers();
 	}
 
 	public void addObserver(Observer obs) {
