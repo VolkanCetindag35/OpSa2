@@ -1,13 +1,17 @@
-package business;
+package business.businessFreizeitbaeder;
 
 import ownUtil.*;
 
 public class Freizeitbad {
 
+	// Name des Freizeitbads
 	private String name;
+	// Oeffnungszeiten
 	private float geoeffnetVon;
 	private float geoeffnetBis;
+	// Laenge des laengsten Beckens
 	private int beckenlaenge;
+	// Wassertemperatur des laengsten Beckens
 	private int temperatur;
 
 	public Freizeitbad(String name, String geoeffnetVon, String geoeffnetBis, String beckenlaenge, String temperatur)
@@ -21,10 +25,10 @@ public class Freizeitbad {
 			this.temperatur = Integer.parseInt(temperatur);
 			feldname = pruefeInhaltlich();
 			if (feldname != null) {
-				throw new PlausiException(PlausiException.INHALTLICH, feldname);
+				throw new InhaltlichePlausiException(feldname);
 			}
 		} else {
-			throw new PlausiException(PlausiException.FORMAL, feldname);
+			throw new FormalePlausiException(feldname);
 		}
 	}
 
@@ -60,25 +64,33 @@ public class Freizeitbad {
 
 	private String pruefeInhaltlich() {
 		String erg = null;
-		if (this.getGeoeffnetVon() < 0 || this.getGeoeffnetVon() >= 24) {
+		if (this.geoeffnetVon < 0 || this.geoeffnetVon >= 24) {
 			return "Geöffnet von";
 		}
-		if (this.getGeoeffnetBis() < 0 || this.getGeoeffnetBis() >= 24
-				|| this.getGeoeffnetBis() <= this.getGeoeffnetVon()) {
+		if (this.geoeffnetBis < 0 || this.geoeffnetBis >= 24 || this.geoeffnetBis <= this.geoeffnetVon) {
 			return "Geöffnet bis";
 		}
-		if (this.getBeckenlaenge() <= 0) {
+		if (this.beckenlaenge <= 0) {
 			return "Beckenlänge";
 		}
-		if (this.getTemperatur() <= 0 || this.getTemperatur() >= 100) {
+		if (this.temperatur <= 0 || this.temperatur >= 100) {
 			return "Temperatur";
 		}
 		return erg;
 	}
 
 	public String gibFreizeitbadZurueck(char trenner) {
-		return this.getName() + trenner + this.getGeoeffnetVon() + trenner + this.getGeoeffnetBis() + trenner
+
+		String bad = "";
+
+		if (trenner == (' ')) {
+			bad = bad + "Daten des Freizeitbades: ";
+		}
+
+		bad = bad + this.getName() + trenner + this.getGeoeffnetVon() + trenner + this.getGeoeffnetBis() + trenner
 				+ this.getBeckenlaenge() + trenner + this.getTemperatur();
+
+		return bad;
 	}
 
 	public String getName() {

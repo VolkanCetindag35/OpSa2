@@ -1,26 +1,23 @@
 package ownUtil;
 
-public class PlausiException extends Exception {
-	
-	private static final long serialVersionUID = 1L;
-	
-	public static final String FORMAL = "formal";
-	public static final String INHALTLICH = "inhaltlich";
-	
-	private String plausiTyp;
-	private String feldname;
+public abstract class PlausiException extends Exception {
 
-	public PlausiException(String plausiTyp, String feldname){
-		this.plausiTyp = plausiTyp;
+	private static final long serialVersionUID = 1L;
+
+	protected String type;
+	protected String feldname;
+
+	public PlausiException(String type, String feldname) {
 		this.feldname = feldname;
+		this.type = type;
 	}
-	
-	public String getPlausiTyp() {
-		return this.plausiTyp;
+
+	public String getMessageForUser() {
+		return "Bitte korrigieren Sie den " + this.type.toLowerCase() + "en Eingabefehler im Feld " + this.feldname
+				+ ".";
 	}
-	
-	public String getMessage(){
-		return "Bitte korrigieren Sie den " + plausiTyp + "en " 
-	  	    + "Eingabefehler im Feld " + this.feldname + ".";
+
+	public String getType() {
+		return type;
 	}
 }

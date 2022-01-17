@@ -1,6 +1,5 @@
 package gui.guiFreizeitbaeder;
 
-import business.Freizeitbad;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -15,15 +14,18 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import ownUtil.FehlermeldungsfensterAnzeiger;
 import ownUtil.MeldungsfensterAnzeiger;
 import ownUtil.PlausiException;
-import business.FreizeitbaederModel;
+import business.businessFreizeitbaeder.Freizeitbad;
+import business.businessFreizeitbaeder.FreizeitbaederModel;
 
 public class FreizeitbaederView {
 
-	private FreizeitbaederControl fbControl;
-	private FreizeitbaederModel fbModel;
+	private FreizeitbaederModel freizeitbaederModel;
+	private FreizeitbaederControl freizeitbaederControl;
 
+	// ---Anfang Attribute der grafischen Oberflaeche---
 	private Pane pane = new Pane();
 	private Label lblEingabe = new Label("Eingabe");
 	private Label lblAnzeige = new Label("Anzeige");
@@ -44,22 +46,22 @@ public class FreizeitbaederView {
 	private Menu mnDatei = new Menu("Datei");
 	private MenuItem mnItmCsvExport = new MenuItem("csv-Export");
 	private MenuItem mnItmTxtExport = new MenuItem("txt-Export");
+	// -------Ende Attribute der grafischen Oberflaeche-------
 
-
-	private Freizeitbad freizeitbad;
-
-	public FreizeitbaederView(Stage primaryStage, FreizeitbaederModel fbModel, FreizeitbaederControl fbControl) {
-		this.fbControl = fbControl;
-		this.fbModel = fbModel;
+	public FreizeitbaederView(FreizeitbaederControl freizeitbaederControl, Stage primaryStage,
+			FreizeitbaederModel freizeitbaederModel) {
 		Scene scene = new Scene(this.pane, 560, 340);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Verwaltung von Freizeitbädern");
 		primaryStage.show();
+		this.freizeitbaederControl = freizeitbaederControl;
+		this.freizeitbaederModel = freizeitbaederModel;
 		this.initKomponenten();
 		this.initListener();
 	}
 
 	private void initKomponenten() {
+		// Labels
 		lblEingabe.setLayoutX(20);
 		lblEingabe.setLayoutY(40);
 		Font font = new Font("Arial", 24);
@@ -82,6 +84,7 @@ public class FreizeitbaederView {
 		pane.getChildren().addAll(lblEingabe, lblAnzeige, lblName, lblGeoeffnetVon, lblGeoeffnetBis, lblBeckenlaenge,
 				lblWassTemperatur);
 
+		// Textfelder
 		txtName.setLayoutX(130);
 		txtName.setLayoutY(90);
 		txtGeoeffnetVon.setLayoutX(130);
@@ -94,6 +97,7 @@ public class FreizeitbaederView {
 		txtWassTemperatur.setLayoutY(250);
 		pane.getChildren().addAll(txtName, txtGeoeffnetVon, txtGeoeffnetBis, txtBeckenlaenge, txtWassTemperatur);
 
+		// Textbereich
 		txtAnzeige.setEditable(false);
 		txtAnzeige.setLayoutX(310);
 		txtAnzeige.setLayoutY(90);
@@ -101,12 +105,14 @@ public class FreizeitbaederView {
 		txtAnzeige.setPrefHeight(185);
 		pane.getChildren().add(txtAnzeige);
 
+		// Buttons
 		btnEingabe.setLayoutX(20);
 		btnEingabe.setLayoutY(290);
 		btnAnzeige.setLayoutX(310);
 		btnAnzeige.setLayoutY(290);
 		pane.getChildren().addAll(btnEingabe, btnAnzeige);
 
+		// Menu
 		this.mnbrMenuLeiste.getMenus().add(mnDatei);
 		this.mnDatei.getItems().add(mnItmCsvExport);
 		this.mnDatei.getItems().add(mnItmTxtExport);
@@ -114,85 +120,68 @@ public class FreizeitbaederView {
 	}
 
 	private void initListener() {
-/*		btnEingabe.setOnAction(new EventHandler<ActionEvent>() {
+		btnEingabe.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
 			public void handle(ActionEvent e) {
 				nehmeFreizeitbadAuf();
 			}
 		});
 		btnAnzeige.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
 			public void handle(ActionEvent e) {
-				zeigeFreizeitbaederAn();
+				zeigeFreizeitbadAn();
 			}
 		});
 		mnItmCsvExport.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
 			public void handle(ActionEvent e) {
-				schreibeFreizeitbaederInDatei("csv");
+				schreibeFreizeitbadInDatei("csv");
 			}
 		});
 		mnItmTxtExport.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
 			public void handle(ActionEvent e) {
-				schreibeFreizeitbaederInDatei("txt");
+				schreibeFreizeitbadInDatei("txt");
 			}
 		});
-*/
-		btnEingabe.setOnAction(
-				e->nehmeFreizeitbadAuf()
-		);
-		btnAnzeige.setOnAction(
-				e->zeigeFreizeitbaederAn()
-		);
-		mnItmCsvExport.setOnAction(
-				e->schreibeFreizeitbaederInDatei("csv")
-		);
-		mnItmTxtExport.setOnAction(
-				e-> schreibeFreizeitbaederInDatei("txt")
-		);
 	}
 
 	private void nehmeFreizeitbadAuf() {
 		try {
-
-			fbModel.addFreizeitbad(new Freizeitbad(txtName.getText(), txtGeoeffnetVon.getText(),
+			freizeitbaederModel.setFreizeitbad(new Freizeitbad(txtName.getText(), txtGeoeffnetVon.getText(),
 					txtGeoeffnetBis.getText(), txtBeckenlaenge.getText(), txtWassTemperatur.getText()));
+			// zeigeInformationsfensterAn("Das Freizeitbad wurde
+			// aufgenommen!");----------------------------------------------
+
 		} catch (PlausiException exc) {
-			zeigeFehlermeldungsfensterAn(exc.getPlausiTyp() + "er ", exc.getMessage());
+			zeigeFehlermeldungAn(exc.getType() + "er Fehler", exc.getMessageForUser());
+		} catch (Exception exc) {
+			zeigeFehlermeldungAn("Fehler", exc.getMessage());
 		}
 	}
 
-	void zeigeFreizeitbaederAn() {
-		/* if (fbModel.getFreizeitbad() != null) {
-			txtAnzeige.setText(fbModel.getFreizeitbad().gibFreizeitbadZurueck(' '));
+	public void zeigeFreizeitbadAn() {
+		if (freizeitbaederModel.getFreizeitbad() != null) {
+			txtAnzeige.setText(freizeitbaederModel.getFreizeitbad().gibFreizeitbadZurueck(' '));
 		} else {
 			zeigeInformationsfensterAn("Bisher wurde kein Freizeitbad aufgenommen!");
 		}
-		*/
-		if (fbModel.getFreizeitbad().size() > 0) {
-			StringBuffer text = new StringBuffer();
-			// Ergaenzen: for each – Schleife ueber ArrayList
-			for(Freizeitbad fzb : this.fbModel.getFreizeitbad())
-			{
-				text.append(fzb.gibFreizeitbadZurueck(' ') + "\n");
-			}
-			this.txtAnzeige.setText(text.toString());
-		} else {
-			zeigeInformationsfensterAn("Bisher wurde kein Freizeitbad aufgenommen!");
-		}
-		
+	}
+
+	private void schreibeFreizeitbadInDatei(String typ) {
+		freizeitbaederControl.schreibeFreizeitbadInDatei(typ);
 	}
 
 	void zeigeInformationsfensterAn(String meldung) {
-		new MeldungsfensterAnzeiger(AlertType.INFORMATION, "Information", meldung).zeigeMeldungsfensterAn();
+		new MeldungsfensterAnzeiger(meldung).zeigeMeldungsfensterAn();
 	}
 
-	void zeigeFehlermeldungsfensterAn(String fehlertyp, String meldung) {
-		new MeldungsfensterAnzeiger(AlertType.ERROR, fehlertyp + "Fehler", meldung).zeigeMeldungsfensterAn();
+	void zeigeFehlermeldungAn(String meldung) {
+		this.zeigeFehlermeldungAn("Fehler", meldung);
 	}
 
-	private void schreibeFreizeitbaederInDatei(String typ) {
-		fbControl.schreibeFreizeitbaederInDatei(typ);
+	private void zeigeFehlermeldungAn(String titel, String meldung) {
+		new FehlermeldungsfensterAnzeiger(titel, meldung).zeigeMeldungsfensterAn();
 	}
 
-	public Freizeitbad getFreizeitbad() {
-		return this.freizeitbad;
-	}
 }

@@ -3,19 +3,19 @@ package ownUtil;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class MeldungsfensterAnzeiger extends Anzeiger {
+public class FehlermeldungsfensterAnzeiger extends Anzeiger {
 
-	private static String titel = "Information";
+	private String titel = "Fehler";
 
-	public MeldungsfensterAnzeiger(String meldung) {
+	public FehlermeldungsfensterAnzeiger(String titel, String meldung) {
 		super(titel, meldung);
+		this.titel = titel;
 	}
 
 	public void zeigeMeldungsfensterAn() {
-		Alert alert = new Alert(AlertType.INFORMATION);
+		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(this.titel);
 		alert.setContentText(this.meldung);
 		alert.showAndWait();
 	}
-
 }

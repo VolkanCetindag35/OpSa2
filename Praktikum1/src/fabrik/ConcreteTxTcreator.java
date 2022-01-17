@@ -4,10 +4,15 @@ import java.io.IOException;
 
 public class ConcreteTxTcreator extends Creator {
 
-	@Override
-	public Product factoryMethod() throws IOException {
-		return new ConcreteTxTproduct();
+	public ConcreteTxTcreator() throws IOException {
+		super();
+		// TODO Auto-generated constructor stub
+		product = new ConcreteTxTproduct();
 	}
-	
+
+	public Product factoryMethod() {
+		// TODO Auto-generated method stub
+		return product;
+	}
 
 }

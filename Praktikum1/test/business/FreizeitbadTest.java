@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.function.BooleanSupplier;
 import org.junit.jupiter.api.Test;
+
+import business.businessFreizeitbaeder.Freizeitbad;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 

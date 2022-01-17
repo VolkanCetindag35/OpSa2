@@ -3,5 +3,7 @@ package fabrik;
 import java.io.IOException;
 
 public abstract class Creator {
-	public abstract Product factoryMethod() throws IOException;
-	}
+	Product product;
+
+	public abstract Product factoryMethod();
+}
