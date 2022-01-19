@@ -1,45 +1,44 @@
 package gui.guiSportstaetten;
 
-import java.io.IOException;
-
-import business.businessFreizeitbaeder.FreizeitbaederModel;
-import business.businessSporthallen.Sporthalle;
-import business.businessSporthallen.SporthallenModel;
 import javafx.stage.Stage;
+import observer.Observer;
+import java.io.IOException;
+import business.businessFreizeitbaeder.FreizeitbaederModel;
+import business.businessSporthallen.SporthallenModel;
 import ownUtil.PlausiException;
-import pattern.Observer;
 
 public class SportstaettenControl implements Observer {
 
-	private SportstaettenView sportstaettenView;
 	private FreizeitbaederModel freizeitbaederModel;
+	private SportstaettenView sportstaettenView;
 	private SporthallenModel sporthallenModel;
 
 	public SportstaettenControl(Stage fensterSportstaetten) {
-		// TODO Auto-generated constructor stub
-		this.freizeitbaederModel = freizeitbaederModel.getTheInstance();
-		this.sporthallenModel = sporthallenModel.getTheInstance();
+		this.freizeitbaederModel = FreizeitbaederModel.getInstance();
+		this.sporthallenModel = SporthallenModel.getInstance();
 		this.sportstaettenView = new SportstaettenView(this, fensterSportstaetten, freizeitbaederModel,
 				sporthallenModel);
-
 		freizeitbaederModel.addObserver(this);
 	}
 
-	public void update() {
-		// TODO Auto-generated method stub
-		sportstaettenView.zeigeFreizeitbadAn();
+	void leseSporthallenAusDatei(String typ) {
+		try {
+			if (typ.equals("csv")) {
+				sporthallenModel.leseSporthallenAusCsvDatei();
+				this.sportstaettenView
+						.zeigeInformationsfensterAn("Die Daten aus Sporthallen.csv wurden erfolgreich importiert.");
+			} else {
+				this.sportstaettenView.zeigeInformationsfensterAn("Die Datei existiert nicht.");
+			}
+		} catch (IOException | PlausiException e) {
+			this.sportstaettenView.zeigeFehlermeldungsfensterAn("Fehler nicht bekannt",
+					"Beim Importieren des ist ein Unbekannter Fehler aufgetaucht");
+			e.printStackTrace();
+		}
 	}
 
-	public Sporthalle leseSporthalleAusCsvDatei() {
-		Sporthalle ergebnis = null;
-		try {
-			ergebnis = sporthallenModel.leseSporthalleAusCsvDatei();
-		} catch (IOException exc) {
-			sportstaettenView.zeigeFehlermeldungAn("IOException beim Lesen!");
-		} catch (Exception exc) {
-			sportstaettenView.zeigeFehlermeldungAn("Unbekannter Fehler beim Lesen!");
-		}
-		return ergebnis;
+	public void update() {
+		sportstaettenView.zeigeFreizeitbaederAn();
 	}
 
 }

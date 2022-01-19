@@ -3,8 +3,8 @@ package gui.guiFreizeitbaeder;
 import java.io.IOException;
 
 import business.businessFreizeitbaeder.FreizeitbaederModel;
-import pattern.*;
 import javafx.stage.Stage;
+import observer.*;
 
 public class FreizeitbaederControl implements Observer {
 
@@ -12,8 +12,8 @@ public class FreizeitbaederControl implements Observer {
 	private FreizeitbaederModel freizeitbaederModel;
 
 	public FreizeitbaederControl(Stage primaryStage) {
-		this.freizeitbaederModel = freizeitbaederModel.getTheInstance();
-		this.freizeitbaederView = new FreizeitbaederView(this, primaryStage, freizeitbaederModel);
+		this.freizeitbaederModel = freizeitbaederModel.getInstance();
+		this.freizeitbaederView = new FreizeitbaederView(primaryStage, freizeitbaederModel, this);
 
 		freizeitbaederModel.addObserver(this);
 	}
@@ -21,25 +21,23 @@ public class FreizeitbaederControl implements Observer {
 	void schreibeFreizeitbadInDatei(String typ) {
 		try {
 			if ("csv".equals(typ)) {
-				freizeitbaederModel.schreibeFreizeitbadInCsvDatei();
+				freizeitbaederModel.schreibeFreizeitbaederInCsvDatei();
 				freizeitbaederView.zeigeInformationsfensterAn("Das Freizeitbad wurde gespeichert!");
 			} else if ("txt".equals(typ)) {
-				freizeitbaederModel.schreibeFreizeitbadInTxtDatei();
+				freizeitbaederModel.schreibeFreizeitbaederInTxtDatei();
 				freizeitbaederView.zeigeInformationsfensterAn("Das Freizeitbad wurde gespeichert!");
 			} else {
 				freizeitbaederView.zeigeInformationsfensterAn("Noch nicht implementiert!");
 			}
 		} catch (IOException exc) {
-			freizeitbaederView.zeigeFehlermeldungAn("IOException beim Speichern!");
+			freizeitbaederView.zeigeFehlermeldungsfensterAn("IOException beim Speichern!", typ);
 		} catch (Exception exc) {
-			freizeitbaederView.zeigeFehlermeldungAn("Unbekannter Fehler beim Speichern!");
+			freizeitbaederView.zeigeFehlermeldungsfensterAn("Unbekannter Fehler beim Speichern!", typ);
 		}
 	}
 
-	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		freizeitbaederView.zeigeFreizeitbadAn();
+		freizeitbaederView.zeigeFreizeitbaederAn();
 	}
 
 }

@@ -6,65 +6,44 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import observer.Observer;
 import ownUtil.PlausiException;
-import pattern.Observer;
 
 public class SporthallenModel {
+    private static SporthallenModel instance = null;
+    public ArrayList<Sporthalle> sporthallen = new ArrayList<Sporthalle>();
 
-	private ArrayList<Observer> observers = new ArrayList<Observer>();
-	private static SporthallenModel spModel;
-	private Sporthalle sporthalle;
-
-	public void addObserver(Observer o) {
-		// TODO Auto-generated method stub
-		observers.add(o);
-	}
-
-	public void deleteObserver(Observer o) {
-		// TODO Auto-generated method stub
-		observers.remove(o);
-	}
-
-	public void notifyObservers() {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < observers.size(); i++) {
-			observers.get(i).update();
-		}
-
-	}
+    public void leseSporthallenAusCsvDatei() throws IOException, PlausiException {
+        BufferedReader ein = new BufferedReader(new FileReader("Sporthalle.csv"));
+        ArrayList<Sporthalle> ergebnis = new ArrayList<>();
+        String zeileStr = ein.readLine();
+        while (zeileStr != null) {
+            System.out.print(zeileStr);
+            String[] zeile = zeileStr.split(";");
+            ergebnis.add(new Sporthalle(zeile[0], zeile[1], zeile[2]));
+            zeileStr = ein.readLine();
+        }
+        ein.close();
+        this.sporthallen = ergebnis;
+    }
 
 	private SporthallenModel() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+        super();
+    }
 
-	public static SporthallenModel getTheInstance() {
-		if (spModel == null)
-			spModel = new SporthallenModel();
 
-		return spModel;
-	}
 
-	public Sporthalle getSporthalle() {
-		return this.sporthalle;
-	}
+    public static SporthallenModel getInstance() {
+        if (instance == null)
+            instance = new SporthallenModel();
+        return instance;
+    }
 
-	public void setSporthalle(Sporthalle sporthalle) {
-		this.sporthalle = sporthalle;
-
-		notifyObservers();
-	}
-
-	public void removeObserver(Observer obs) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public Sporthalle leseSporthalleAusCsvDatei() throws IOException, Exception {
-		BufferedReader ein = new BufferedReader(new FileReader("Sporthalle.csv"));
-		String[] zeile = ein.readLine().split(";");
-		Sporthalle ergebnis = new Sporthalle(zeile[0], zeile[1], zeile[2]);
-		ein.close();
-		return ergebnis;
-	}
+    public ArrayList<Sporthalle> getSporthallen(){
+        return this.sporthallen;
+    }
 }
+
+	
+	
+	

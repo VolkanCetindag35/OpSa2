@@ -1,24 +1,15 @@
 package gui.guiFreizeitbaeder;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import business.businessFreizeitbaeder.Freizeitbad;
+import business.businessFreizeitbaeder.FreizeitbaederModel;
+import javafx.event.*;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import ownUtil.FehlermeldungsfensterAnzeiger;
-import ownUtil.MeldungsfensterAnzeiger;
-import ownUtil.PlausiException;
-import business.businessFreizeitbaeder.Freizeitbad;
-import business.businessFreizeitbaeder.FreizeitbaederModel;
+import ownUtil.*;
 
 public class FreizeitbaederView {
 
@@ -48,14 +39,18 @@ public class FreizeitbaederView {
 	private MenuItem mnItmTxtExport = new MenuItem("txt-Export");
 	// -------Ende Attribute der grafischen Oberflaeche-------
 
-	public FreizeitbaederView(FreizeitbaederControl freizeitbaederControl, Stage primaryStage,
-			FreizeitbaederModel freizeitbaederModel) {
+	// speichert temporaer ein Objekt vom Typ Freizeitbad
+
+	private Freizeitbad freizeitbad;
+
+	public FreizeitbaederView(Stage primaryStage, FreizeitbaederModel freizeitbaederModel,
+			FreizeitbaederControl freizeitbaederControl) {
+		this.freizeitbaederControl = freizeitbaederControl;
+		this.freizeitbaederModel = freizeitbaederModel;
 		Scene scene = new Scene(this.pane, 560, 340);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Verwaltung von Freizeitbädern");
 		primaryStage.show();
-		this.freizeitbaederControl = freizeitbaederControl;
-		this.freizeitbaederModel = freizeitbaederModel;
 		this.initKomponenten();
 		this.initListener();
 	}
@@ -120,49 +115,32 @@ public class FreizeitbaederView {
 	}
 
 	private void initListener() {
-		btnEingabe.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				nehmeFreizeitbadAuf();
-			}
-		});
-		btnAnzeige.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				zeigeFreizeitbadAn();
-			}
-		});
-		mnItmCsvExport.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				schreibeFreizeitbadInDatei("csv");
-			}
-		});
-		mnItmTxtExport.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				schreibeFreizeitbadInDatei("txt");
-			}
-		});
+
+		btnEingabe.setOnAction(e -> nehmeFreizeitbadAuf());
+		btnAnzeige.setOnAction(e -> zeigeFreizeitbaederAn());
+		mnItmCsvExport.setOnAction(e -> schreibeFreizeitbadInDatei("csv"));
+		mnItmTxtExport.setOnAction(e -> schreibeFreizeitbadInDatei("txt"));
+
 	}
 
 	private void nehmeFreizeitbadAuf() {
 		try {
-			freizeitbaederModel.setFreizeitbad(new Freizeitbad(txtName.getText(), txtGeoeffnetVon.getText(),
+			freizeitbaederModel.addFreizeitbad(new Freizeitbad(txtName.getText(), txtGeoeffnetVon.getText(),
 					txtGeoeffnetBis.getText(), txtBeckenlaenge.getText(), txtWassTemperatur.getText()));
-			// zeigeInformationsfensterAn("Das Freizeitbad wurde
-			// aufgenommen!");----------------------------------------------
 
 		} catch (PlausiException exc) {
-			zeigeFehlermeldungAn(exc.getType() + "er Fehler", exc.getMessageForUser());
-		} catch (Exception exc) {
-			zeigeFehlermeldungAn("Fehler", exc.getMessage());
+			zeigeFehlermeldungsfensterAn(exc.getPlausiTyp() + "er ", exc.getMessage());
 		}
 	}
 
-	public void zeigeFreizeitbadAn() {
-		if (freizeitbaederModel.getFreizeitbad() != null) {
-			txtAnzeige.setText(freizeitbaederModel.getFreizeitbad().gibFreizeitbadZurueck(' '));
+	public void zeigeFreizeitbaederAn() {
+		if (freizeitbaederModel.getFreizeitbad().size() > 0) {
+			StringBuffer text = new StringBuffer();
+			for (Freizeitbad x : this.freizeitbaederModel.getFreizeitbad()) {
+				text.append(x.gibFreizeitbadZurueck(' ') + "\n");
+			}
+
+			txtAnzeige.setText(text.toString());
 		} else {
 			zeigeInformationsfensterAn("Bisher wurde kein Freizeitbad aufgenommen!");
 		}
@@ -173,15 +151,11 @@ public class FreizeitbaederView {
 	}
 
 	void zeigeInformationsfensterAn(String meldung) {
-		new MeldungsfensterAnzeiger(meldung).zeigeMeldungsfensterAn();
+		new MeldungsfensterAnzeiger(AlertType.INFORMATION, "Information", meldung).zeigeMeldungsfensterAn();
 	}
 
-	void zeigeFehlermeldungAn(String meldung) {
-		this.zeigeFehlermeldungAn("Fehler", meldung);
-	}
-
-	private void zeigeFehlermeldungAn(String titel, String meldung) {
-		new FehlermeldungsfensterAnzeiger(titel, meldung).zeigeMeldungsfensterAn();
+	void zeigeFehlermeldungsfensterAn(String fehlertyp, String meldung) {
+		new MeldungsfensterAnzeiger(AlertType.ERROR, fehlertyp + "Fehler", meldung).zeigeMeldungsfensterAn();
 	}
 
 }

@@ -3,15 +3,9 @@ package fabrik;
 import java.io.IOException;
 
 public class ConcreteCreator extends Creator {
+	public Product factoryMethod(String typ) throws IOException {
 
-	public ConcreteCreator() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-		product = new ConcreteProduct();
+		return new ConcreteProduct();
 	}
 
-	public Product factoryMethod() {
-		// TODO Auto-generated method stub
-		return product;
-	}
 }

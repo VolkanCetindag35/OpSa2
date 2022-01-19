@@ -1,14 +1,10 @@
 package fabrik;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-
 import business.businessFreizeitbaeder.Freizeitbad;
 
 public abstract class Product {
+	public abstract void fuegeInDateiHinzu(Object object) throws IOException;
 
-	BufferedWriter aus;
-
-	public abstract void fuegeZeileHinzu(Freizeitbad freizeitbad) throws IOException;
-
+	public abstract void schliesseDatei() throws IOException;
 }

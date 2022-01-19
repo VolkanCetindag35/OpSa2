@@ -25,10 +25,10 @@ public class Freizeitbad {
 			this.temperatur = Integer.parseInt(temperatur);
 			feldname = pruefeInhaltlich();
 			if (feldname != null) {
-				throw new InhaltlichePlausiException(feldname);
+				throw new PlausiException(PlausiException.INHALTLICH, feldname);
 			}
 		} else {
-			throw new FormalePlausiException(feldname);
+			throw new PlausiException(PlausiException.FORMAL, feldname);
 		}
 	}
 

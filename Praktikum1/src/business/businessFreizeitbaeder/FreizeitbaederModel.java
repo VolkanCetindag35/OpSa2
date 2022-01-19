@@ -1,82 +1,71 @@
 package business.businessFreizeitbaeder;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
-//import java.util.Observable;
-
 import fabrik.ConcreteCreator;
 import fabrik.ConcreteTxTcreator;
 import fabrik.Creator;
 import fabrik.Product;
-import pattern.Observable;
-//import pattern.ConcreteObservable;
-import pattern.Observer;
+import observer.Observable;
+import observer.Observer;
 
-public final class FreizeitbaederModel implements Observable {
+public class FreizeitbaederModel implements Observable {
 
+	private ArrayList<Freizeitbad> freizeitbad = new ArrayList<>();
 	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
-	public void addObserver(Observer o) {
-		// TODO Auto-generated method stub
-		observers.add(o);
-	}
-
-	public void deleteObserver(Observer o) {
-		// TODO Auto-generated method stub
-		observers.remove(o);
-	}
-
-	public void notifyObservers() {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < observers.size(); i++) {
-			observers.get(i).update();
-		}
-
-	}
-
-	private Freizeitbad freizeitbad;
-	private static FreizeitbaederModel theInstance = null;
+	private static final FreizeitbaederModel freizeitbaederModel = new FreizeitbaederModel();
 
 	private FreizeitbaederModel() {
-		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
-	public static FreizeitbaederModel getTheInstance() {
-		if (theInstance == null)
-			theInstance = new FreizeitbaederModel();
+	public static FreizeitbaederModel getInstance() {
 
-		return theInstance;
+		return freizeitbaederModel;
 	}
 
-	public Freizeitbad getFreizeitbad() {
+	public ArrayList<Freizeitbad> getFreizeitbad() {
 		return this.freizeitbad;
 	}
 
-	public void setFreizeitbad(Freizeitbad freizeitbad) {
-		this.freizeitbad = freizeitbad;
-
-		notifyObservers();
+	public void addFreizeitbad(Freizeitbad freizeitbad) {
+		this.freizeitbad.add(freizeitbad);
+		this.notifyObservers();
 	}
 
-	public void schreibeFreizeitbadInCsvDatei() throws IOException {
-		Creator writerCreator = new ConcreteCreator();
-		Product writer = writerCreator.factoryMethod();
-		writer.fuegeZeileHinzu(this.freizeitbad);
+	public void schreibeFreizeitbaederInCsvDatei() throws IOException {
+		Creator c = new ConcreteCreator();
+		Product writer = c.factoryMethod(null);
+		for (Freizeitbad x : freizeitbad) {
+			writer.fuegeInDateiHinzu(x);
+		}
+		writer.schliesseDatei();
 	}
 
-	public void schreibeFreizeitbadInTxtDatei() throws IOException {
-		// TODO Auto-generated method stub
-		Creator writerCreator = new ConcreteTxTcreator();
-		Product writer = writerCreator.factoryMethod();
-		writer.fuegeZeileHinzu(this.freizeitbad);
+	public void schreibeFreizeitbaederInTxtDatei() throws IOException {
+		Creator c = new ConcreteTxTcreator();
+		Product writer = c.factoryMethod(null);
+		for (Freizeitbad x : freizeitbad) {
+			writer.fuegeInDateiHinzu(x);
+		}
+
+		writer.schliesseDatei();
+
 	}
 
-	@Override
+	public void addObserver(Observer obs) {
+		this.observers.add(obs);
+		;
+	}
+
 	public void removeObserver(Observer obs) {
-		// TODO Auto-generated method stub
-
+		observers.remove(obs);
 	}
 
+	public void notifyObservers() {
+		for (Observer o : observers) {
+			o.update();
+		}
+	}
 }

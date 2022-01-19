@@ -1,21 +1,14 @@
 package business.businessSporthallen;
 
-import java.util.ArrayList;
-
-import ownUtil.FormalePlausiException;
-import ownUtil.InhaltlichePlausiException;
 import ownUtil.PlausiException;
 
 public class Sporthalle {
 
-	// Name der Sporthalle
 	private String name;
-	// Groesse der Flaeche
 	private int anzahlQuadratmeter;
-	// Bodenbelag
 	private String bodenbelag;
 
-	public Sporthalle(String name, String anzahlQuadratmeter, String bodenbelag) throws Exception {
+	public Sporthalle(String name, String anzahlQuadratmeter, String bodenbelag) throws PlausiException {
 		String feldname = pruefeFormal(name, anzahlQuadratmeter, bodenbelag);
 		if (feldname == null) {
 			this.name = name;
@@ -23,10 +16,10 @@ public class Sporthalle {
 			this.bodenbelag = bodenbelag;
 			feldname = pruefeInhaltlich();
 			if (feldname != null) {
-				throw new InhaltlichePlausiException(feldname);
+				throw new PlausiException(PlausiException.INHALTLICH, feldname);
 			}
 		} else {
-			throw new FormalePlausiException(feldname);
+			throw new PlausiException(PlausiException.FORMAL, feldname);
 		}
 	}
 
